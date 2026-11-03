@@ -1,0 +1,21 @@
+# Python virtual environments
+.venv/
+
+# Python-generated files
+__pycache__/
+*.py[cod]
+
+# Jupyter-generated files
+.ipynb_checkpoints/
+
+# Original and processed datasets
+# The source data can be downloaded again from Kaggle.
+data/raw/*
+!data/raw/.gitkeep
+
+data/processed/*
+!data/processed/.gitkeep
+
+# Operating-system files
+.DS_Store
+Thumbs.db
