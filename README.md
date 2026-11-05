@@ -896,10 +896,10 @@ A safer approach is:
 4. **Instructions:**
     1. Count orders by `order_status` and sort the result from largest to smallest.
     2. Group item lines by `order_id`.
-    3. For each order, calculate the sum of `price`, the sum of `freight_value`, and the number of item lines.
-    4. Name the aggregated columns `product_sales_brl`, `freight_brl`, and `item_line_count`.
-    5. Merge the order-level item summary with `orders_clean` using `order_id`.
-    6. Compare the number of rows before and after the merge.
+        1. For each order, calculate the sum of `price`, the sum of `freight_value`, and the number of item lines.
+        2. Name the aggregated columns `product_sales_brl`, `freight_brl`, and `item_line_count`.
+    3. Merge the order-level item summary with `orders_clean` using `order_id`.
+    4. Compare the number of rows before and after the merge.
 5. **Expected result:** A status-count Series and an order-level DataFrame with one row per order that has item lines. The row count should not multiply during the merge.
 6. **Hints:** Use `value_counts()` for the first task. Use `groupby().agg()` for the second. The item summary has one row per order after grouping.
 7. **Skills practised:** `value_counts()`, `groupby()`, `agg()`, `merge()`, `nunique()`, and merge validation.
