@@ -945,12 +945,12 @@ The aggregated item table contains at most one row per `order_id`, so a one-to-o
 3. **Relevant columns:** `order_id`, `order_status`, `order_purchase_timestamp`, `price`, `freight_value`, and `order_item_id`.
 4. **Instructions:**
     1. Select only orders whose `order_status` is `delivered`.
-    2. Keep `order_id` and `order_purchase_timestamp` from the orders DataFrame.
-    3. Merge those rows with `items_clean` on `order_id`.
-    4. Create a `purchase_month` column from `order_purchase_timestamp` using monthly periods.
-    5. Group by month and calculate product price total, freight total, combined item-plus-freight total, distinct order count, and item-line count.
-    6. Sort the result chronologically.
-    7. Identify the month with the highest product price total. Do not invent an explanation for why it was highest.
+        - Keep `order_id` and `order_purchase_timestamp` from the orders DataFrame.
+    2. Merge those rows with `items_clean` on `order_id`.
+    3. Create a `purchase_month` column from `order_purchase_timestamp` using monthly periods.
+    4. Group by month and calculate product price total, freight total, combined item-plus-freight total, distinct order count, and item-line count.
+        - Sort the result chronologically.
+    5. Identify the month with the highest product price total. Do not invent an explanation for why it was highest.
 5. **Expected result:** A month-indexed summary with one row per month in the dataset's period. It should include separate product and freight totals, plus order and item-line counts.
 6. **Hints:** Use `.dt.to_period("M")` after converting the date column. Use `nunique` for distinct orders. Use a `many_to_one` validation because many item rows can match one order row.
 7. **Skills practised:** Filtering, selecting, merging, date accessors, `groupby()`, `agg()`, sorting, and business metric definitions.
@@ -960,7 +960,7 @@ The aggregated item table contains at most one row per `order_id`, so a one-to-o
 
 ```python
 delivered_order_dates = orders_clean.loc[
-    orders_clean["order_status"].eq("delivered"),
+    orders_clean["order_status"] == "delivered",
     ["order_id", "order_purchase_timestamp"],
 ].copy()
 
@@ -1015,7 +1015,7 @@ print("Month with the highest product sales:", monthly_sales["product_sales_brl"
 7. **Skills practised:** Reading additional CSVs, sequential merges, `fillna()`, `groupby()`, `agg()`, sorting, and distinct counts.
 
 <details>
-<summary>Show Solution</summary>
+<summary>Show Solution</summary>++
 
 ```python
 products = pd.read_csv(data_dir / "olist_products_dataset.csv")
@@ -1082,7 +1082,7 @@ The product table has a few source column names with the spelling `lenght`. You 
 
 ```python
 delivered_orders = orders_clean.loc[
-    orders_clean["order_status"].eq("delivered")
+    orders_clean["order_status"] == "delivered"
 ].copy()
 
 delivered_with_customers = delivered_orders.merge(
@@ -1095,7 +1095,7 @@ delivered_with_customers = delivered_orders.merge(
     ],
     on="customer_id",
     how="left",
-    validate="one_to_one",
+    validate="many_to_one",
 )
 
 state_summary = (
