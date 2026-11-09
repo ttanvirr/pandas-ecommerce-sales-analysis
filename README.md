@@ -1139,11 +1139,11 @@ orders_with_customer_identity = orders_clean.merge(
     customers[["customer_id", "customer_unique_id"]],
     on="customer_id",
     how="left",
-    validate="one_to_one",
+    validate="many_to_one",
 )
 
 delivered_customer_orders = orders_with_customer_identity.loc[
-    orders_with_customer_identity["order_status"].eq("delivered")
+    orders_with_customer_identity["order_status"] == "delivered"
 ].copy()
 
 order_counts_by_customer = (
